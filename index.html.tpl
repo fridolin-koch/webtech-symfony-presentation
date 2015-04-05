@@ -5,7 +5,7 @@
     <title>[Topic 7]Symfony2</title>
     <!-- CSS dependencies -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/prism.css">
+    <link rel="stylesheet" href="assets/css/github.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
@@ -15,6 +15,12 @@
             padding-top: 20px;
             padding-bottom: 20px;
             font-family: 'Open Sans', sans-serif;
+        }
+        p {
+            line-height: 1.6;
+        }
+        a {
+            font-weight: bold;
         }
         .navbar {
             margin-bottom: 20px;
@@ -49,16 +55,21 @@
 
                 <h2 id="section2">2. Environment requirements</h2>
 
-                <p>Personally I recommend using a UNIX based system, but every OS which has PHP and MySQL support should be fine.</p>
+                <p>
+                    Personally I recommend using a UNIX based system, but every OS that supports at least <a href="http://php.net/downloads.php">PHP 5.3.3</span></a> and <a href="http://dev.mysql.com/downloads/mysql/">MySQL</span></a> should be fine.
+                    In this tutorial I'll assume that you are using a UNIX based system. Symfony has also some <a href="http://symfony.com/doc/current/reference/requirements.html">requirements <span class="fa fa-external-link"></span></a>, your system needs to fulfill.
+                    If you are new to PHP I recommend you to use the Vagrant file from the <a href="#section21">next</a> section.
+                </p>
+                <!-- Vagrant -->
+                <h3 id="section21">2.1 Vagrant</h3>
+                <p>
+                    This <a href="https://www.vagrantup.com/">Vagrant</a> file uses simple <a href="https://docs.vagrantup.com/v2/provisioning/shell.html">Shell-Provisioning</span></a> for creating a LAMP environment that works with Symfony2
+                </p>
+                <!-- code(Vagrantfile, ruby) -->
+                <!-- code(provision.sh, bash) -->
 
-                <h3>2.1 Vagrant</h3>
-
-                <p>I've created a custom <a href="https://www.vagrantup.com/">Vagrant</a> file, specially suited for Symfony</p>
-                <!-- Vagrant File -->
-                <script src="https://gist.github.com/fridolin-koch/e7b865b66bbe29abd7e7.js?file=Vagrantfile"></script>
-
-
-                <h3>2.2 PHP for OS X 10.6 to 10.10</h3>
+                <!-- Mac -->
+                <h3 id="section22">2.2 PHP for OS X 10.6 to 10.10</h3>
 
                 <p>If you are planning to install PHP native on your Mac I recommend you to use the pre-build binary packages provided by <a href="https://www.liip.ch/de">liip</a>.
                     You'll find detailed installing instruction <a href="http://php-osx.liip.ch/">here</a>.
@@ -66,21 +77,29 @@
 
                 <h2 id="section3">3. Setting up Symfony</h2>
 
-                <p>Recently the Symfony team introduced the <a href="http://symfony.com/blog/introducing-the-new-symfony-installer">Symfony Installer</a> which makes it very easy to install Symfony into a certain directory.<br>
-                </p>
+                <p>Recently the Symfony team introduced the <a href="http://symfony.com/blog/introducing-the-new-symfony-installer">Symfony Installer</a> which makes it very easy to install Symfony into a certain directory:</p>
+                <!-- code(install_sf.sh, bash) -->
+
+                <p>Now we need to configure the database connection, </p>
+
+                <!-- code(parameters.yml, yaml) -->
+
+                <h2 id="section4">4. Creating the Model</h2>
+
+                <p>As mentioned in the presentation Since we are dealing with an ORM.</p>
+
 
             </div>
         </div>
         <!-- Footer -->
         <footer class="footer">
             <div class="container">
-                <p class="text-muted">by Fridolin Koch 2015</p>
+                <p class="text-muted">Author Fridolin Koch 6th of April, 2015</p>
             </div>
         </footer>
     </div>
     <!-- Javascript -->
     <script src="assets/js/jquery-2.1.3.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/prism.js"></script>
 </body>
 </html>
