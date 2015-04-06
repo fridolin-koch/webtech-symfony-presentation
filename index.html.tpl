@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>[Topic 7]Symfony2</title>
+    <title>Listen to the Symfony by Fridolin Koch</title>
     <!-- CSS dependencies -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/github.css">
@@ -26,7 +26,11 @@
             margin-bottom: 20px;
         }
         .footer {
+            margin-top: 20px;
             border-top: 1px solid #808080;
+        }
+        img {
+            margin:20px 0;
         }
     </style>
 </head>
@@ -43,13 +47,26 @@
                 <h2 id="section1">1. Introduction</h2>
 
                 <p>In the first part of this tutorial I will show you how to create a very simple Issue-Tracker using the web application framework <a href="http://symfony.com/">Symfony 2</a>.
-                    In part two of this tutorial we will add multi-user support to the application.
+                   In the second part of this tutorial  add multi-user support to the application. The solutions for both parts of the tutorial are available on GitHub.
+                    Everything is in one repository seperated by tags:<br>
+                    <a href="https://github.com/fridolin-koch/tum-webtech-symfony/tree/v1.0.1">Part I (v.1.0.1)</a>
+                    <a href="https://github.com/fridolin-koch/tum-webtech-symfony/tree/v2.0.0">Part II (v.1.0.2)</a>
                 </p>
-                <p>This tutorial will cover the following topics:</p>
+
+                <p></p>
+
+                <p><strong>What this tutorial is about</strong><br>
+                    This tutorial is about <a href="http://symfony.com/">Symfony 2</a>, <a href="http://www.doctrine-project.org/projects/orm.html">Doctrine2</a> and <a href="http://twig.sensiolabs.org/">Twig</a>.
+                    The reader will learn how to implement the Model based on an UML diagram, how to create Controllers handling all the <a href="">CRUD actions</a> for </p>
                 <ul>
-                    <li>Setting up the environment</li>
-                    <li>Installing Symfony</li>
+                    <li>Setting up a environment for using Symfony</li>
+                    <li>Installing and configuring Symfony</li>
+                    <li>Implementing the Model using <a href="">Doctrine2</a></li>
+                    <li>Implementing the Controllers</li>
+                    <li>Implementing the View using <a href="">Twig</a></li>
                 </ul>
+
+                <p><strong>What this tutorial is not about</strong><br>I'll assume that you are familiar with the concepts of object oriented programming, uml, relational databases and sql because I won't cover these topics.</p>
 
                 <hr>
 
@@ -84,12 +101,52 @@
 
                 <!-- code(parameters.yml, yaml) -->
 
+                <h3 id="section33">3.3 Removing the demo code</h3>
+
+                <p>The Symfony 2 standard edition comes with some demo code, which is useless for our purpose. So we need to remove it.</p>
+
+                <ol>
+                    <li>Delete the directory <code>src/Acme</code></li>
+                    <li>Remove the reference <code>new Acme\DemoBundle\AcmeDemoBundle()</code> from the application kernel in <code>app/AppKernel.php#24</code>.</li>
+                    <li>Remove the reference to the bundle in <code>app/routing_dev.yml</code></li>
+                </ol>
+
                 <h2 id="section4">4. Creating the Model</h2>
 
-                <p>As mentioned in the presentation Since we are dealing with an ORM.</p>
+                <p>This is the uml diagram of our Model. For reasons of clarity and comprehensibility getters and setters were omitted.</p>
 
+                <img src="assets/images/dbmodel.png" class="img-responsive">
+
+                <p>
+                    Using <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/annotations-reference.html">annotations</a> is the recommend way of defining the orm mapping.
+                    Of course you can also use Yaml, XML or PHP to define the mapping information of the Doctrine entities. That said, it is the <a href="http://symfony.com/doc/current/best_practices/business-logic.html#doctrine-mapping-information">best practice approach</a> to use annotations.
+                    We start by implementing the class <code>AppBundle\Entity\TaskState</code>:
+                </p>
+                <!-- code(TaskState.php, php) -->
+
+                <p>The fields <code>$name</code> and <code>$color</code> are self-explanatory. We use the <code>@Id</code> annotation to tell Doctrine that field <code>$id</code> is our primary key.
+                    Further we tell Doctrine to use the strategy <code>AUTO</code> to generate the value of <code>$id</code>. This tells Doctrine to pick the strategy that is preferred by the used database platform.
+                    In our case the choose strategy would be <code>IDENTITY</code> which makes use of the <a href="https://dev.mysql.com/doc/refman/5.6/en/example-auto-increment.html">MySQL AUTO_INCREMENT</a> attribute.<br>
+                    The implantation process for <code>AppBundle\Entity\TaskType</code> and <code>AppBundle\Entity\TaskPriority</code> is equivalent, so we continue with the <code>AppBundle\Entity\TaskState</code> entity.</p>
+
+                <!-- code(Task.php, php) -->
+
+                <p>At this point it's getting exciting since we are now defining the associations between the entities. Let's take a look at the annotations of the <code>$state</code> field.
+                    The first annotation <code>@ManyToOne</code> defines a unidirectional association to the <code>TaskState</code> entity. On is internally represented by a foreign key.
+                    The second annotation <code>@JoinColumn</code> defines the columns which are necessary for the join. It also defines that the task state cannot be null.
+                    <code>$project</code> is the <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/unitofwork-associations.html">owning</a> side of bidirectional association.
+
+                </p>
+
+                <div class="alert alert-info">
+                    <strong>Note</strong><br> There are many more association types which can be used.
+                    The <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html">doctrine documentation</a> is a excellent reference if you want to know more about association mapping.
+                </div>
+
+                <p>The <code>AppBundle\Entity\Project</code> entity defines the </p>
 
             </div>
+
         </div>
         <!-- Footer -->
         <footer class="footer">

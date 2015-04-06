@@ -66,12 +66,14 @@ table.highlighttable {
 }
 table.highlighttable td.linenos {
     text-align: center;
+    width: 20px;
 }
 table.highlighttable td.linenos .linenodiv pre {
     background-color: #FAFAFA;
     color: #999;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: 0;
 }
 table.highlighttable td.code .highlight pre {
     background-color: #ffffff;
