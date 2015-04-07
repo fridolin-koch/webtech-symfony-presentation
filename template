@@ -748,7 +748,7 @@ symfony new projectmgr
 
                 <hr>
 
-                <h2 id="section5">5. Controller &amp; Routing</h2>
+                <h2>5. Controller &amp; Routing</h2>
 
                 <p>
                     Symfony comes with an interactive CURD generator which you can use. Generating the controller, the routes and the views is often a good staring point - especially when you are new to Symfony.
@@ -857,7 +857,7 @@ Generating the Form code: OK
 
                 <hr>
 
-                <h2 id="section6">6. Templating</h2>
+                <h2>6. Exploring the templates</h2>
 
                 <p>
                     Maybe you noticed that the generated views are just plain html without any stylesheet. So it's time to prettify our application, <a href="">Bootstrap</a> is a clever and easy way to do so.
@@ -990,10 +990,10 @@ Generating the Form code: OK
 
                 <p>You may have noticed the <code>{% stylesheets %}</code> and the <code>{% javascripts %}</code> blocks. This blocks are provided by the AsseticBundle which provides many features for dealing with assets.
                     You can read about it <a href="http://symfony.com/doc/current/cookbook/assetic/asset_management.html">here</a>.<br><br>
-                    Next we need to customize out templates, to inherit the base template.<br> This is quite simple, we do this by changing <code>{% extends '::base.html.twig' %}</code> to <code>{% extends 'AppBundle::layout.html.twig' %}</code>
+                    Next we need to customize out templates, to inherit the base template. This is quite simple, we do this by changing <code>{% extends '::base.html.twig' %}</code> to <code>{% extends 'AppBundle::layout.html.twig' %}</code>
+
                 </p>
 
-                <h2 id="section6">6. Forms and Validation</h2>
 
             </div>
 

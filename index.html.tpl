@@ -46,27 +46,22 @@
 
                 <h2 id="section1">1. Introduction</h2>
 
-                <p>In the first part of this tutorial I will show you how to create a very simple Issue-Tracker using the web application framework <a href="http://symfony.com/">Symfony 2</a>.
-                   In the second part of this tutorial  add multi-user support to the application. The solutions for both parts of the tutorial are available on GitHub.
-                    Everything is in one repository seperated by tags:<br>
-                    <a href="https://github.com/fridolin-koch/tum-webtech-symfony/tree/v1.0.1">Part I (v.1.0.1)</a>
-                    <a href="https://github.com/fridolin-koch/tum-webtech-symfony/tree/v2.0.0">Part II (v.1.0.2)</a>
+                <p>In this tutorial I will show you how to create a very simple Issue-Tracker using the web application framework <a href="http://symfony.com/">Symfony 2</a>.
+                    The complete solution is available on <a href="https://github.com/fridolin-koch/tum-webtech-symfony/">GitHub</a>. Therefore this document contains only important code passages.
+                    I assume that the reader of this document is familiar with the basic concepts of object oriented programming, uml, relational databases, sql, html, css especially <a href="http://getbootstrap.com/">Bootstrap 3</a> - and php.
                 </p>
 
                 <p></p>
 
                 <p><strong>What this tutorial is about</strong><br>
-                    This tutorial is about <a href="http://symfony.com/">Symfony 2</a>, <a href="http://www.doctrine-project.org/projects/orm.html">Doctrine2</a> and <a href="http://twig.sensiolabs.org/">Twig</a>.
-                    The reader will learn how to implement the Model based on an UML diagram, how to create Controllers handling all the <a href="">CRUD actions</a> for </p>
+                    This tutorial is about <a href="http://symfony.com/">Symfony 2</a>, <a href="http://www.doctrine-project.org/projects/orm.html">Doctrine2</a> and <a href="http://twig.sensiolabs.org/">Twig</a>. It covers the following topics:
                 <ul>
-                    <li>Setting up a environment for using Symfony</li>
-                    <li>Installing and configuring Symfony</li>
-                    <li>Implementing the Model using <a href="">Doctrine2</a></li>
-                    <li>Implementing the Controllers</li>
-                    <li>Implementing the View using <a href="">Twig</a></li>
+                    <li><a href="#section2">Setting up a environment for using Symfony</a></li>
+                    <li><a href="#section3">Installing and configuring Symfony</a></li>
+                    <li><a href="#section4">Creating the Model using Doctrine 2</a></li>
+                    <li><a href="#section5">Controllers & Routing</a></li>
+                    <li><a href="#section6">Templating</a></li>
                 </ul>
-
-                <p><strong>What this tutorial is not about</strong><br>I'll assume that you are familiar with the concepts of object oriented programming, uml, relational databases and sql because I won't cover these topics.</p>
 
                 <hr>
 
@@ -77,6 +72,9 @@
                     In this tutorial I'll assume that you are using a UNIX based system. Symfony has also some <a href="http://symfony.com/doc/current/reference/requirements.html">requirements <span class="fa fa-external-link"></span></a>, your system needs to fulfill.
                     If you are new to PHP I recommend you to use the Vagrant file from the <a href="#section21">next</a> section.
                 </p>
+
+                <hr>
+
                 <!-- Vagrant -->
                 <h3 id="section21">2.1 Vagrant</h3>
                 <p>
@@ -85,23 +83,14 @@
                 <!-- code(Vagrantfile, ruby) -->
                 <!-- code(provision.sh, bash) -->
 
-                <!-- Mac -->
-                <h3 id="section22">2.2 PHP for OS X 10.6 to 10.10</h3>
-
-                <p>If you are planning to install PHP native on your Mac I recommend you to use the pre-build binary packages provided by <a href="https://www.liip.ch/de">liip</a>.
-                    You'll find detailed installing instruction <a href="http://php-osx.liip.ch/">here</a>.
-                </p>
-
                 <h2 id="section3">3. Setting up Symfony</h2>
 
                 <p>Recently the Symfony team introduced the <a href="http://symfony.com/blog/introducing-the-new-symfony-installer">Symfony Installer</a> which makes it very easy to install Symfony into a certain directory:</p>
                 <!-- code(install_sf.sh, bash) -->
 
-                <p>Now we need to configure the database connection, </p>
+                <p>Next we need to configure the database connection, this is done inside <code>app/config/parameters.yml</code>:</p>
 
                 <!-- code(parameters.yml, yaml) -->
-
-                <h3 id="section33">3.3 Removing the demo code</h3>
 
                 <p>The Symfony 2 standard edition comes with some demo code, which is useless for our purpose. So we need to remove it.</p>
 
@@ -111,11 +100,15 @@
                     <li>Remove the reference to the bundle in <code>app/routing_dev.yml</code></li>
                 </ol>
 
+                <hr>
+
                 <h2 id="section4">4. Creating the Model</h2>
 
                 <p>This is the uml diagram of our Model. For reasons of clarity and comprehensibility getters and setters were omitted.</p>
 
                 <img src="assets/images/dbmodel.png" class="img-responsive">
+
+                <h3 id="section41">4.1 Creating the model</h3>
 
                 <p>
                     Using <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/annotations-reference.html">annotations</a> is the recommend way of defining the orm mapping.
@@ -134,16 +127,73 @@
                 <p>At this point it's getting exciting since we are now defining the associations between the entities. Let's take a look at the annotations of the <code>$state</code> field.
                     The first annotation <code>@ManyToOne</code> defines a unidirectional association to the <code>TaskState</code> entity. On is internally represented by a foreign key.
                     The second annotation <code>@JoinColumn</code> defines the columns which are necessary for the join. It also defines that the task state cannot be null.
-                    <code>$project</code> is the <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/unitofwork-associations.html">owning</a> side of bidirectional association.
-
+                    <code>$project</code> is the <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/unitofwork-associations.html">owning</a> side of a bidirectional association to the <code>AppBundle\Entity\Project</code> entity.
+                    This means Doctrine loads all tasks into the corresponding Project-Object, particularly in the field <code>AppBundle\Entity\Project$tasks</code>:
                 </p>
+
+                <!-- code(Project.php, php) -->
 
                 <div class="alert alert-info">
                     <strong>Note</strong><br> There are many more association types which can be used.
                     The <a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html">doctrine documentation</a> is a excellent reference if you want to know more about association mapping.
                 </div>
 
-                <p>The <code>AppBundle\Entity\Project</code> entity defines the </p>
+                <p>After implementing all entities according to the uml model, you should have the following classes resp. files in <code>src/AppBundle/Entity</code>:</p>
+                <ul>
+                    <li>Comment</li>
+                    <li>Project</li>
+                    <li>Task</li>
+                    <li>TaskPriority</li>
+                    <li>TaskState</li>
+                    <li>TaskType</li>
+                </ul>
+
+                <p>
+                    The last step is to generate sql code resp. create the database schema from our model. This is very and takes only a few seconds. Head over to the commandline and cd into the root directory of the project.
+                    Now you can run <code>php app/console doctrine:schema:create</code> which tell Doctrine to create from our mapping.
+                </p>
+
+                <h3 id="section42">4.2 Data fixtures</h3>
+
+                <p>Now we want to add some defaults to our database. Fortunately there is a very handy bundle called <a href="http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html">DoctrineFixturesBundle</a> which can handle this task.
+                The <a href="http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#setup-and-configuration">Setup and Configuration</a> is described very well.
+                Next we define a new fixtures in <code>src/DataFixtures/ORM/LoadDefaultData.php</code> which creates default values for TaskPriority, TaskState and TaskType.
+                </p>
+
+                <!-- code(LoadDefaultData.php, php) -->
+
+                <p>The code is executed by invoking <code>php app/console doctrine:fixtures:load</code>. This command will purge your database and then execute all classes in <code>src/DataFixtures/ORM/</code> which are implementing the <code>Doctrine\Common\DataFixtures\FixtureInterface</code></p>
+
+                <hr>
+
+                <h2 id="section5">5. Controller &amp; Routing</h2>
+
+                <p>
+                    Symfony comes with an interactive CURD generator which you can use. Generating the controller, the routes and the views is often a good staring point - especially when you are new to Symfony.
+                    This is how the process looks for our project entity:
+                </p>
+
+                <!-- code(generate.sh, bash) -->
+
+                <p>We can now access the controller using our browser, just go to /project. Repeat this for the Task entitiy</p>
+
+                <hr>
+
+                <h2 id="section6">6. Templating</h2>
+
+                <p>
+                    Maybe you noticed that the generated views are just plain html without any stylesheet. So it's time to prettify our application, <a href="">Bootstrap</a> is a clever and easy way to do so.
+                    We create a base template named <code>layout.html.twig</code> which contains all the stylesheets:
+                </p>
+
+                <!-- code(layout.html.twig, twig) -->
+
+                <p>You may have noticed the <code>{% stylesheets %}</code> and the <code>{% javascripts %}</code> blocks. This blocks are provided by the AsseticBundle which provides many features for dealing with assets.
+                    You can read about it <a href="http://symfony.com/doc/current/cookbook/assetic/asset_management.html">here</a>.<br><br>
+                    Next we need to customize out templates, to inherit the base template.<br> This is quite simple, we do this by changing <code>{% extends '::base.html.twig' %}</code> to <code>{% extends 'AppBundle::layout.html.twig' %}</code>
+                </p>
+
+                <h2 id="section6">6. Forms and Validation</h2>
 
             </div>
 
