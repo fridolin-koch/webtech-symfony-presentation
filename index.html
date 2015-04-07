@@ -48,7 +48,7 @@
 
                 <p>In this tutorial I will show you how to create a very simple Issue-Tracker using the web application framework <a href="http://symfony.com/">Symfony 2</a>.
                     The complete solution is available on <a href="https://github.com/fridolin-koch/tum-webtech-symfony/">GitHub</a>. Therefore this document contains only important code passages.
-                    I assume that the reader of this document is familiar with the basic concepts of object oriented programming, uml, relational databases, sql, html, css especially <a href="http://getbootstrap.com/">Bootstrap 3</a> - and php.
+                    I assume that the reader of this document is familiar with the basic concepts of object oriented programming, uml, relational databases, sql, html, css - especially <a href="http://getbootstrap.com/">Bootstrap 3</a> and php.
                 </p>
 
                 <p></p>
