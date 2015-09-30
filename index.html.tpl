@@ -51,7 +51,7 @@
                     I assume that the reader of this document is familiar with the basic concepts of object oriented programming, uml, relational databases, sql, html, css - especially <a href="http://getbootstrap.com/">Bootstrap 3</a> and php.
                 </p>
 
-                <p></p>
+                <p>Live-Demo: <a href="http://pm1.fkse.io">pm1.fkse.io</a></p>
 
                 <p><strong>What this tutorial is about</strong><br>
                     This tutorial is about <a href="http://symfony.com/">Symfony 2</a>, <a href="http://www.doctrine-project.org/projects/orm.html">Doctrine2</a> and <a href="http://twig.sensiolabs.org/">Twig</a>. It covers the following topics:
@@ -193,7 +193,17 @@
                     Next we need to customize out templates, to inherit the base template.<br> This is quite simple, we do this by changing <code>{% extends '::base.html.twig' %}</code> to <code>{% extends 'AppBundle::layout.html.twig' %}</code>
                 </p>
 
-                <h2 id="section6">7. Whats next?</h2>
+                <h2 id="section7">7. Form validation</h2>
+
+                <p>
+                    The primary key of the <code>AppBundle\Entity\Project</code> entity is a string which can be entered by the user, so we definitely need to validate it.
+                    Validation can also be achieved by using <a href="http://symfony.com/doc/current/reference/constraints.html">annotations</a>. In our case we want a lower case alphanumeric string.
+                    For this purpose the <a href="http://symfony.com/doc/current/reference/constraints/Regex.html">Regex validation constraint</a> is perfect. We just need to extend the <code>AppBundle\Entity\Project</code> class:
+                </p>
+
+                <!-- code(ProjectValidation.php, php) -->
+
+                <h2 id="section8">8. Whats next?</h2>
 
                 <p>You just saw the core functionality of Symfony 2. The Symfony 2 framework has many more features and components.
                     If this short tutorial made you curious you should head over the excellent <a href="http://symfony.com/doc/current/index.html">Symfony documentation</a>.

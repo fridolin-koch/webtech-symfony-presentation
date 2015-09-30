@@ -51,7 +51,7 @@
                     I assume that the reader of this document is familiar with the basic concepts of object oriented programming, uml, relational databases, sql, html, css - especially <a href="http://getbootstrap.com/">Bootstrap 3</a> and php.
                 </p>
 
-                <p></p>
+                <p>Live-Demo: <a href="http://pm1.fkse.io">pm1.fkse.io</a></p>
 
                 <p><strong>What this tutorial is about</strong><br>
                     This tutorial is about <a href="http://symfony.com/">Symfony 2</a>, <a href="http://www.doctrine-project.org/projects/orm.html">Doctrine2</a> and <a href="http://twig.sensiolabs.org/">Twig</a>. It covers the following topics:
@@ -561,22 +561,58 @@ symfony new projectmgr
                     This means Doctrine loads all tasks into the corresponding Project-Object, particularly in the field <code>AppBundle\Entity\Project$tasks</code>:
                 </p>
 
-                <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+                <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">AppBundle\Entity</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Doctrine\ORM\Mapping</span> <span class="k">as</span> <span class="nx">ORM</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @ORM\Entity</span>
+<span class="sd"> * @ORM\Table(&quot;projects&quot;)</span>
+<span class="sd"> */</span>
 <span class="k">class</span> <span class="nc">Project</span>
 <span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\Id</span>
+<span class="sd">     * @ORM\Column(type=&quot;string&quot;)</span>
+<span class="sd">     */</span>
+    <span class="k">private</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="c1">//... more fields</span>
+
     <span class="sd">/**</span>
 <span class="sd">     * @ORM\OneToMany(targetEntity=&quot;Task&quot;, mappedBy=&quot;project&quot;)</span>
 <span class="sd">     * @ORM\OrderBy({&quot;modifiedDate&quot; = &quot;ASC&quot;})</span>
 <span class="sd">     */</span>
     <span class="k">private</span> <span class="nv">$tasks</span><span class="p">;</span>
+
+    <span class="c1">//... getters and setters</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table>
@@ -924,7 +960,11 @@ Generating the Form code: OK
 58
 59
 60
-61</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+61
+62
+63
+64
+65</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html lang=&quot;en&quot;&gt;</span>
 <span class="x">&lt;head&gt;</span>
 <span class="x">    &lt;meta charset=&quot;utf-8&quot;&gt;</span>
@@ -951,7 +991,7 @@ Generating the Form code: OK
 <span class="x">&lt;nav class=&quot;navbar navbar-default navbar-fixed-top&quot;&gt;</span>
 <span class="x">    &lt;div class=&quot;container&quot;&gt;</span>
 <span class="x">        &lt;div class=&quot;navbar-header&quot;&gt;</span>
-<span class="x">            &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbar&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;navbar&quot;&gt;</span>
+<span class="x">            &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbar&quot;&gt;</span>
 <span class="x">                &lt;span class=&quot;sr-only&quot;&gt;Toggle navigation&lt;/span&gt;</span>
 <span class="x">                &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;</span>
 <span class="x">                &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;</span>
@@ -961,10 +1001,14 @@ Generating the Form code: OK
 <span class="x">        &lt;/div&gt;</span>
 <span class="x">        &lt;div id=&quot;navbar&quot; class=&quot;navbar-collapse collapse&quot;&gt;</span>
 <span class="x">            &lt;ul class=&quot;nav navbar-nav&quot;&gt;</span>
-<span class="x">                &lt;li</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">app.request.get</span><span class="o">(</span><span class="s1">&#39;_route&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;project&#39;</span> <span class="cp">%}</span><span class="x"> class=&quot;active&quot;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;project&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;Projects&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">                &lt;li</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">app.request.get</span><span class="o">(</span><span class="s1">&#39;_route&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;project&#39;</span> <span class="cp">%}</span><span class="x"> class=&quot;active&quot;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">&gt;</span>
+<span class="x">                    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;project&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;Projects&lt;/a&gt;</span>
+<span class="x">                &lt;/li&gt;</span>
 <span class="x">            &lt;/ul&gt;</span>
 <span class="x">            &lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;</span>
-<span class="x">                &lt;li</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">app.request.get</span><span class="o">(</span><span class="s1">&#39;_route&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;project_new&#39;</span> <span class="cp">%}</span><span class="x"> class=&quot;active&quot;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;project_new&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;&lt;span class=&quot;fa fa-plus&quot;&gt;&lt;/span&gt; New Project&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">                &lt;li</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">app.request.get</span><span class="o">(</span><span class="s1">&#39;_route&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;project_new&#39;</span> <span class="cp">%}</span><span class="x"> class=&quot;active&quot;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">&gt;</span>
+<span class="x">                    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;project_new&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;&lt;span class=&quot;fa fa-plus&quot;&gt;&lt;/span&gt; New Project&lt;/a&gt;</span>
+<span class="x">                &lt;/li&gt;</span>
 <span class="x">            &lt;/ul&gt;</span>
 <span class="x">        &lt;/div&gt;&lt;!--/.nav-collapse --&gt;</span>
 <span class="x">    &lt;/div&gt;</span>
@@ -993,7 +1037,81 @@ Generating the Form code: OK
                     Next we need to customize out templates, to inherit the base template.<br> This is quite simple, we do this by changing <code>{% extends '::base.html.twig' %}</code> to <code>{% extends 'AppBundle::layout.html.twig' %}</code>
                 </p>
 
-                <h2 id="section6">7. Whats next?</h2>
+                <h2 id="section7">7. Form validation</h2>
+
+                <p>
+                    The primary key of the <code>AppBundle\Entity\Project</code> entity is a string which can be entered by the user, so we definitely need to validate it.
+                    Validation can also be achieved by using <a href="http://symfony.com/doc/current/reference/constraints.html">annotations</a>. In our case we want a lower case alphanumeric string.
+                    For this purpose the <a href="http://symfony.com/doc/current/reference/constraints/Regex.html">Regex validation constraint</a> is perfect. We just need to extend the <code>AppBundle\Entity\Project</code> class:
+                </p>
+
+                <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">AppBundle\Entity</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Doctrine\ORM\Mapping</span> <span class="k">as</span> <span class="nx">ORM</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\Validator\Constraints</span> <span class="k">as</span> <span class="nx">Assert</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @ORM\Entity</span>
+<span class="sd"> * @ORM\Table(&quot;projects&quot;)</span>
+<span class="sd"> * @UniqueEntity(&quot;name&quot;)</span>
+<span class="sd"> * @UniqueEntity(&quot;id&quot;)</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Project</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\Id</span>
+<span class="sd">     * @ORM\Column(type=&quot;string&quot;)</span>
+<span class="sd">     * @Assert\NotBlank</span>
+<span class="sd">     * @Assert\Regex(</span>
+<span class="sd">     *  pattern=&quot;/^[a-z0-9-_]+$/&quot;,</span>
+<span class="sd">     *  message=&quot;The project identifier may only contain alphanumeric characters, dashes and underscores&quot;</span>
+<span class="sd">     * )</span>
+<span class="sd">     */</span>
+    <span class="k">private</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @ORM\OneToMany(targetEntity=&quot;Task&quot;, mappedBy=&quot;project&quot;)</span>
+<span class="sd">     * @ORM\OrderBy({&quot;modifiedDate&quot; = &quot;ASC&quot;})</span>
+<span class="sd">     */</span>
+    <span class="k">private</span> <span class="nv">$tasks</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+                <h2 id="section8">8. Whats next?</h2>
 
                 <p>You just saw the core functionality of Symfony 2. The Symfony 2 framework has many more features and components.
                     If this short tutorial made you curious you should head over the excellent <a href="http://symfony.com/doc/current/index.html">Symfony documentation</a>.
